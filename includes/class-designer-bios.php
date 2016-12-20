@@ -71,6 +71,8 @@ class Designer_Bios {
 		$this->plugin_name = 'designer-bios';
 		$this->version = '1.0.0';
 
+		define( 'BIOS_PLUGIN_NAME' , $this->plugin_name );
+
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -120,6 +122,11 @@ class Designer_Bios {
          * Load the Utils code
          */
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-utils.php';
+
+        /**
+         * Load the API helper code
+         */
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-api.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.

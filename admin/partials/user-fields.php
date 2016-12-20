@@ -5,6 +5,11 @@
  * Date: 12/19/16
  * Time: 3:30 PM
  */
+//Utils::dump(array(
+//
+//    'username' => get_the_author_meta( 'iconfinder_username', $user->ID ),
+//    'twitter' => get_the_author_meta( 'twitter_username', $user->ID )
+//));
 ?>
 <h3>Iconfinder Profile Information</h3>
 <table class="form-table">

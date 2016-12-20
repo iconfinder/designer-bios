@@ -195,11 +195,113 @@ class Designer_Bios_Public {
                 'author_iconsets' => icf_author_iconsets( $attrs, true )
             );
 
-            $output = Utils::buffer( ICF_TEMPLATE_PATH . "shortcode-author-box.php", $theme_args );
+            $output = Utils::buffer( BIOS_THEMES_PUBLIC . "shortcode-author-box.php", $theme_args );
             set_transient( $cache_key, $output, 3600 );
         }
 
         return $output;
+    }
+
+    /**
+     * Show samples from a designer's Iconfinder profile.
+     * @param array $attrs      The shortcode attributes
+     * @param bool  $refresh    Whether or not to refresh any cached version
+     * @return string
+     *
+     * Allowed values:
+     *
+     *      username    Iconfinder username
+     *      count       The number of iconsets to show
+     *      sets        Iconset IDs of specific sets to show (over-rides count)
+     *
+     *      In most cases the wp_username and Iconfinder username will likely be the same. But since the two
+     *      systems are independent of one another, it is possible for the usernames to be different. If the
+     *      Profile information you want to display is for the author of the current post, then the wp_username
+     *      is not needed because it will be pulled from the current post's author metadata. But the shortcode
+     *      allows you to display author bio information of any user and is not tightly coupled to the current
+     *      blog post, which is why the wp_username can be explicitly indicated.
+     *
+     * Username Priority:
+     *    - If a wp_username value is given, it will over-ride the user metadata for current blog post's author
+     *    - If an `username` (iconfinder username) is given, will be used for API call.
+     *    - If no wp_username or username value is given, values from author of current post will be used.
+     *
+     * @example
+     *
+     *      [iconfinder_author username=iconify count=3]
+     *      [iconfinder_author username=iconify sets=1245,1246,1247]
+     */
+    function designer_iconsets( $attrs=array(), $refresh=false ) {
+
+        $username     = Utils::get( $attrs, 'username', get_the_author_meta( 'iconfinder_username' ) );
+        $count        = Utils::get( $attrs, 'count', 3 );
+        $sets         = Utils::get( $attrs, 'sets' );
+
+        /**
+         * Create a unique key for caching the shortcode data.
+         */
+
+        $cache_key    = "authbox_{$username}_sets_";
+
+        if (! empty($sets)) {
+            $cache_key .= str_replace(',', '_', $sets);
+        }
+        else {
+            $cache_key .= $count;
+        }
+
+        /**
+         * Try to retrieve the requested data from the cache.
+         */
+
+        $cached = null;
+
+        if ( ! $refresh ) {
+            $cached = get_transient( $cache_key );
+        }
+
+        if ( empty( $cached )) {
+            /**
+             * Get all of the user's iconsets
+             */
+            # $iconsets = icf_get_user_iconsets( $username );
+            $iconsets = Utils::user_iconsets( $username );
+            if ( isset( $iconsets['items'] ) ) {
+                $iconsets = $iconsets['items'];
+            }
+
+            /**
+             * If specific sets have been specified, filter for those sets, or
+             * if a count has been given, return the specified number of previews.
+             */
+            if ( ! empty($sets) ) {
+                $iconsets = filter_by_iconsets( $iconsets, explode(',', $sets) );
+                $iconsets = Utils::filter_iconsets( $iconsets, explode(',', $sets) );
+            }
+            else if ( $count > 0 ) {
+                $iconsets = array_slice( $iconsets, 0, $count );
+            }
+
+            /**
+             * Save this data for subsequent requests.
+             */
+            set_transient( $cache_key, $iconsets, 3600 );
+        }
+
+        /**
+         * If no sets have been found, exit.
+         */
+        if (empty($iconsets)) return;
+
+        /**
+         * Theme the shorcode output.
+         */
+        $theme_args = array(
+            'iconsets' => $iconsets,
+            'username' => $username
+        );
+
+        return Utils::buffer( BIOS_THEMES_PUBLIC . "shortcode-author-iconsets.php", $theme_args );
     }
 
 }
