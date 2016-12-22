@@ -15,7 +15,7 @@ Pages, Custom Post types, widgets, etc.
 
 To add a Designer Bio simply add the shortcode in the following format:
 
-[designer_bio username=webalys bio=1 avatar=1 count=4 wp_username=vincent]
+`[designer_bio username=webalys bio=1 avatar=1 count=4 wp_username=vincent]`
 
 The accepted attributes for the shortcode are explained below:
 
@@ -23,7 +23,9 @@ The accepted attributes for the shortcode are explained below:
 
 * _accepts: any valid iconfinder username_
 * _default: true_
-* _required: no_
+* _required: yes_
+
+`[designer_bio username=webalys]`
 
 This is the iconfinder username for the user. This username may or may not be the same as the WordPress username for 
 the designer. In most cases we will probably want the usernames to be the same but it may not always be possible. 
@@ -37,6 +39,10 @@ to display bio information.
 * _default: true_
 * _required: no_
 
+_Example_
+
+`[designer_bio username=webalys bio=0]`
+
 This attribute accepts a boolean value and indicates whether or not to display the text bio information. 
 The attribute is optional and defaults to `true`
 
@@ -45,6 +51,8 @@ The attribute is optional and defaults to `true`
 * _accepts: 1, 0, true, false, yes, or no_
 * _default: true_
 * _required: no_
+
+`[designer_bio username=webalys avatar=0]`
 
 This attribute accepts a boolean value and indicates whether or not to display the user's avatar.
 The attribute is optional and defaults to `true`
@@ -55,7 +63,11 @@ Indicates the number of iconsets to display.
 
 * _accepts: integer_
 * _default: 3_
-* _required: no_
+* _required: no_ 
+
+_Example_
+
+`[designer_bio username=webalys count=4]`
 
 ### wp_username
 
@@ -68,5 +80,10 @@ username the designer uses to log into the blog (if they are a blog post author)
 * _accepts: a valid WordPress username_
 * _default: none_
 * _required: no_
+
+
+_Example_ 
+
+`[designer_bio username=webalys wp_username=vincent]`
 
 
