@@ -27,7 +27,7 @@
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
-	die;
+    die;
 }
 
 /**
@@ -35,8 +35,8 @@ if ( ! defined( 'WPINC' ) ) {
  * This action is documented in includes/class-designer-bios-activator.php
  */
 function activate_designer_bios() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-designer-bios-activator.php';
-	Designer_Bios_Activator::activate();
+    require_once plugin_dir_path( __FILE__ ) . 'includes/class-designer-bios-activator.php';
+    Designer_Bios_Activator::activate();
 }
 
 /**
@@ -44,8 +44,8 @@ function activate_designer_bios() {
  * This action is documented in includes/class-designer-bios-deactivator.php
  */
 function deactivate_designer_bios() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-designer-bios-deactivator.php';
-	Designer_Bios_Deactivator::deactivate();
+    require_once plugin_dir_path( __FILE__ ) . 'includes/class-designer-bios-deactivator.php';
+    Designer_Bios_Deactivator::deactivate();
 }
 
 register_activation_hook( __FILE__, 'activate_designer_bios' );
@@ -68,8 +68,8 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-designer-bios.php';
  */
 function run_designer_bios() {
 
-	$plugin = new Designer_Bios();
-	$plugin->run();
+    $plugin = new Designer_Bios();
+    $plugin->run();
 
 }
 run_designer_bios();
