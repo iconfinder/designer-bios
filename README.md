@@ -19,8 +19,7 @@ To add a Designer Bio simply add the shortcode in the following format:
 
 The accepted attributes for the shortcode are explained below:
 
-- - -
-### username
+## username
 
 * _accepts: any valid iconfinder username_
 * _default: true_
@@ -36,8 +35,7 @@ the designer. In most cases we will probably want the usernames to be the same b
 A WordPress username is not required in order to display iconsets by a designer, but it is required in order 
 to display bio information.
 
-- - -
-### bio
+## bio
 
 * _**accepts**: 1, 0, true, false, yes, or no_
 * _**default**: true_
@@ -50,8 +48,7 @@ _**Example**_
 This attribute accepts a boolean value and indicates whether or not to display the text bio information. 
 The attribute is optional and defaults to `true`
 
-- - -
-### avatar
+## avatar
 
 * _**accepts**: 1, 0, true, false, yes, or no_
 * _**default**: true_
@@ -64,8 +61,7 @@ _**Example**_
 This attribute accepts a boolean value and indicates whether or not to display the user's avatar.
 The attribute is optional and defaults to `true`
 
-- - -
-### count
+## count
 
 Indicates the number of iconsets to display.
 
@@ -77,8 +73,7 @@ _**Example**_
 
 `[designer_bio username=webalys count=4]`
 
-- - -
-### wp_username
+## wp_username
 
 The Iconfinder Blog (WordPress) username for the designer. It may not always be possible for the designer to have 
 the same username in WordPress as on the Iconfinder site. Ideally they will be the same but not always.
