@@ -35,6 +35,23 @@ the designer. In most cases we will probably want the usernames to be the same b
 A WordPress username is not required in order to display iconsets by a designer, but it is required in order 
 to display bio information.
 
+## wp_username
+
+The Iconfinder Blog (WordPress) username for the designer. It may not always be possible for the designer to have 
+the same username in WordPress as on the Iconfinder site. Ideally they will be the same but not always.
+
+To be clear: the `username` attribute refers to the designer's username on iconfinder.com. The `wp_username` is the 
+username the designer uses to log into the blog (if they are a blog post author).
+
+* _**accepts**: a valid WordPress username_
+* _**default**: none_
+* _**required**: no_
+
+
+_**Example**_ 
+
+`[designer_bio username=webalys wp_username=vincent]`
+
 ## bio
 
 * _**accepts**: 1, 0, true, false, yes, or no_
@@ -73,21 +90,32 @@ _**Example**_
 
 `[designer_bio username=webalys count=4]`
 
-## wp_username
+## sets
 
-The Iconfinder Blog (WordPress) username for the designer. It may not always be possible for the designer to have 
-the same username in WordPress as on the Iconfinder site. Ideally they will be the same but not always.
+This attribute allows you to show specific sets from the designer's iconsets. This setting over-rides the `count` 
+setting. The `count` will be however many iconset IDs you list.
 
-To be clear: the `username` attribute refers to the designer's username on iconfinder.com. The `wp_username` is the 
-username the designer uses to log into the blog (if they are a blog post author).
-
-* _**accepts**: a valid WordPress username_
+* _**accepts**: 1-N valid iconset IDs_
 * _**default**: none_
+* _**required**: no_
+
+_**Example**_ 
+
+`[designer_bio username=webalys sets=3272,3262,3258]`
+
+## use_ref
+
+This attribute indicates whether or not to add the designer's referrer code to the iconset links in their bio. The 
+default value is `false` so you have to explicitly indicate to use the designer's referrer code.
+
+* _**accepts**: 1, 0, true, false, yes, or no_
+* _**default**: false_
 * _**required**: no_
 
 
 _**Example**_ 
 
-`[designer_bio username=webalys wp_username=vincent]`
+`[designer_bio username=webalys count=4 use_ref=1]`
+
 
 

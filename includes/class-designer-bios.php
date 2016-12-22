@@ -79,7 +79,6 @@ class Designer_Bios {
         $this->define_public_hooks();
 
         $this->define_paths();
-
     }
 
     private function define_paths() {
@@ -140,7 +139,6 @@ class Designer_Bios {
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-designer-bios-public.php';
 
         $this->loader = new Designer_Bios_Loader();
-
     }
 
     /**
@@ -157,7 +155,6 @@ class Designer_Bios {
         $plugin_i18n = new Designer_Bios_i18n();
 
         $this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
-
     }
 
     /**
@@ -179,7 +176,6 @@ class Designer_Bios {
 
         $this->loader->add_action( 'personal_options_update',  $plugin_admin, 'save_user_profile_fields' );
         $this->loader->add_action( 'edit_user_profile_update', $plugin_admin, 'save_user_profile_fields' );
-
     }
 
     /**
@@ -195,7 +191,6 @@ class Designer_Bios {
 
         $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
         $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-
     }
 
     /**

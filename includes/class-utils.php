@@ -77,7 +77,7 @@ class Utils {
      */
     public static function debug($what, $die=true) {
 
-        return Utiles::dump( $what, $die );
+        return Utils::dump( $what, $die );
     }
 
     /**
@@ -148,13 +148,30 @@ class Utils {
     }
 
     /**
+     * @param array     $iconsets  The array of iconsets
+     * @return null|int         The iconset_id of the last item in the list
+     */
+    private static function last_id( $iconsets ) {
+        $last_id = null;
+        if (isset($iconsets['items']) && count($iconsets['items'])) {
+            $n = count($iconsets['items'])-1;
+            if (isset($iconsets['items'][$n]['iconset_id'])) {
+                $last_id = $iconsets['items'][$n]['iconset_id'];
+            }
+        }
+        return $last_id;
+    }
+
+    /**
      * Get all iconsets.
      * @param string    $username   Optional username for who to get all iconsets.
      * @return array|mixed|null|object
      */
     public static function all_iconsets( $username=null ) {
 
-        static $iconsets = array();
+        $iconsets = array();
+        $batches  = array();
+        $x = 0;
 
         $items = array();
 
@@ -162,26 +179,99 @@ class Utils {
 
             $path = API::path('iconsets', array( 'username' => $username ));
 
+            /**
+             * We grab the first batch outside of the loop so we
+             * can determine how many total iconsets there are.
+             */
             $batch = API::call(
                 API::url($path, array( 'count' => API::maxcount() ))
             );
-            $total_count = self::get($batch, 'total_count') + 1;
-            $page_count = ceil($total_count / API::maxcount() );
-            $iconsets = $batch;
-            for ($i=0; $i<$page_count; $i++) {
-                $last_id = null;
-                if (isset($batch['items']) && count($batch['items'])) {
-                    $n = count($batch['items'])-1;
-                    if (isset($batch['items'][$n]['iconset_id'])) {
-                        $last_id = $batch['items'][$n]['iconset_id'];
-                        $batch = API::call(
-                            API::url($path, array( 'after' => $last_id, 'count' => API::maxcount() ))
-                        );
+
+            $_x = $x;
+            $batches['batch-' . $_x]['url'] = API::url($path, array( 'count' => API::maxcount() ) );
+            $batches['batch-' . $_x]['result'] = $batch;
+
+            /**
+             * Get the iconset_id of the last item in the list for
+             * the `after` query arg.
+             */
+            $last_id = self::last_id( $batch );
+
+            /**
+             * How many total iconsets are there?
+             */
+            $total_count = self::get($batch, 'total_count');
+
+            /**
+             * This is how many API calls will be required since there
+             * is a 100-count limit to API calls.
+             */
+            $batch_count = ceil($total_count  / API::maxcount() ) ;
+
+            try {
+                /**
+                 * Add the batch to the return data.
+                 */
+                $iconsets = $batch;
+
+                /**
+                 * We start with offset 1 since we already grabbed
+                 * the first batch (page) of results.
+                 */
+                for ($i=1; $i<$batch_count ; $i++) {
+                    /**
+                     * Default to the maximum API results count.
+                     */
+                    $count = API::maxcount();
+
+                    /**
+                     * If we are on the last batch, we only want to
+                     * call the remaining number of results because
+                     * the API will just loop around to fill the full
+                     * number of results requests
+                     * (IMHO, this is a logical error in the API).
+                     */
+                    if ( $i == $batch_count-1 ) {
+                        $count = $total_count - ( $i * API::maxcount() ) - 1;
+                    }
+
+                    /**
+                     * Build the query args. We onlly add the `after` argument
+                     * if there is one needed. Otherwise, the API will return
+                     * an empty set.
+                     */
+                    $query_args = array('count' => $count);
+                    if ( ! empty($last_id) ) {
+                        $query_args['after'] = $last_id;
+                    }
+
+                    /**
+                     * Get the next batch of iconsets.
+                     */
+                    $batch = API::call(
+                        API::url($path, $query_args )
+                    );
+
+                    /**
+                     * If we have some items in the batch, get the iconset_id
+                     * of the last item so we know where to start the results
+                     * in the API request.
+                     */
+                    if (isset($batch['items']) && count($batch['items'])) {
                         if (is_array($iconsets['items']) && is_array($batch['items'])) {
                             $iconsets['items'] = array_merge($iconsets['items'], $batch['items']);
                         }
+                        $n = count($batch['items'])-1;
+                        if (isset($batch['items'][$n]['iconset_id'])) {
+                            $last_id = self::last_id( $batch );
+                            $iconsets['run_count'][] = $last_id;
+                            $iconsets['run_count'][] = API::url($path, $query_args );
+                        }
                     }
                 }
+            }
+            catch(Exceptoin $e) {
+                Utils::debug( $e );
             }
             if (isset($iconsets['items'])) {
                 $ids = array();
@@ -196,6 +286,7 @@ class Utils {
         }
         $result = $iconsets;
         if (! empty($username)) $iconsets = array();
+
         return $result;
     }
 

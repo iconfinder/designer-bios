@@ -215,7 +215,11 @@ class API {
                 }
             }
             catch(Exception $e) {
-                throw new Exception($e);
+                # throw new Exception($e);
+                Utils::debug(array(
+                    'api_url' => $api_url,
+                    'exceptionn' => $e
+                ));
             }
         }
 
@@ -340,11 +344,8 @@ class API {
 
         $result = null;
 
-        if (! is_array($query_args)) $query_args = array();
-
-        $query_args = array(
-            'count' => Utils::get($query_args, 'count', self::maxcount() )
-        );
+        if (! is_array($query_args)) $query_args = array('count' => 100);
+        if (! isset( $query_args['count'])) $query_args['count'] = 100;
 
         # $result = new WP_Error('error', 'No valid API credentials');
 
