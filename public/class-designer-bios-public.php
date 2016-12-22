@@ -164,7 +164,7 @@ class Designer_Bios_Public {
          * Create a unique key for caching the shortcode data.
          */
 
-        $cache_key = "dezbox_{$username}_{$show_bio}_sets_";
+        $cache_key = "desbio_{$username}_{$show_bio}_sets_";
 
         if (! empty($sets)) {
             $cache_key .= str_replace(',', '_', $sets);
