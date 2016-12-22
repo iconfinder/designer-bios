@@ -138,22 +138,33 @@ class Designer_Bios_Public {
      *
      * @example
      *
-     *      [iconfinder_author username=iconify wp_username=vectoricons bio=1 count=3]
-     *      [iconfinder_author username=iconify wp_username=vectoricons bio=0 sets=1245,1246,1247]
+     *      [designer_bio username=iconify wp_username=vectoricons bio=1 count=3]
+     *      [designer_bio username=iconify wp_username=vectoricons bio=0 sets=1245,1246,1247]
      */
-    function designer_bio( $attrs=array(), $refresh=false ) {
+    public static function designer_bio( $attrs=array(), $refresh=true ) {
 
         $username     = Utils::get( $attrs, 'username', get_the_author_meta( 'iconfinder_username' ) );
         $wp_username  = Utils::get( $attrs, 'wp_username' );
         $show_bio     = Utils::is_true(Utils::get( $attrs, 'bio', true ));
+        $show_avatar  = Utils::is_true(Utils::get( $attrs, 'avatar', true ));
         $count        = Utils::get( $attrs, 'count', 3 );
         $sets         = Utils::get( $attrs, 'sets' );
+
+        /**
+         * Initiate our vars
+         */
+
+        $results  = null;
+        $user_id  = null;
+        $nickname = null;
+        $avatar   = null;
+        $bio      = null;
 
         /**
          * Create a unique key for caching the shortcode data.
          */
 
-        $cache_key    = "authbox_{$username}_{$show_bio}_sets_";
+        $cache_key = "dezbox_{$username}_{$show_bio}_sets_";
 
         if (! empty($sets)) {
             $cache_key .= str_replace(',', '_', $sets);
@@ -166,36 +177,56 @@ class Designer_Bios_Public {
             $output = $cache;
         }
         else {
-            $user_id = null;
 
             if (! empty($wp_username)) {
                 $user = get_user_by( 'login', $wp_username );
                 $user_id = $user->ID;
             }
             else if (! empty($username)) {
+                $nickname = $username;
                 $user_query = new WP_User_Query( array(
                     'meta_key'   => 'iconfinder_username',
                     'meta_value' => $username
                 ));
                 $results = $user_query->get_results();
-                if (is_array( $results )) {
-                    $user = $results[0];
-                    $user_id = $user->ID;
+                if ( is_array( $results ) && $results[0] ) {
+                    $user     = $results[0];
+                    $user_id  = $user->ID;
+                    $nickname = get_the_author_meta( 'nickname', $user_id );
+                    $bio      = get_the_author_meta( 'description', $user_id );
+                    $avatar   = get_avatar( get_the_author_meta( 'user_email', $user_id ), '128' );
                 }
+            }
+
+            /**
+             * If we did not find a WordPress user corresponding to the username,
+             * then there is no bio to show.
+             */
+
+            if (empty($results)) {
+                $show_bio = 0;
             }
 
             /**
              * Theme the shorcode output.
              */
+
             $theme_args = array(
-                'username' => $username,
-                'show_bio' => $show_bio,
-                'count'    => $count,
-                'user_id'  => $user_id,
-                'author_iconsets' => icf_author_iconsets( $attrs, true )
+                'username'    => $username,
+                'nickname'    => $nickname,
+                'avatar'      => $avatar,
+                'show_bio'    => $show_bio,
+                'show_avatar' => $show_avatar,
+                'bio'         => $bio,
+                'count'       => $count,
+                'user_id'     => $user_id,
+                'iconsets'    => self::designer_iconsets( $attrs, true )
             );
 
-            $output = Utils::buffer( BIOS_THEMES_PUBLIC . "shortcode-author-box.php", $theme_args );
+            /**
+             * Cache the output in case we need it again.
+             */
+            $output = Utils::buffer( BIOS_THEMES_FRONT . "shortcode-author-box.php", $theme_args );
             set_transient( $cache_key, $output, 3600 );
         }
 
@@ -228,10 +259,12 @@ class Designer_Bios_Public {
      *
      * @example
      *
-     *      [iconfinder_author username=iconify count=3]
-     *      [iconfinder_author username=iconify sets=1245,1246,1247]
+     *      [designer_iconsets username=iconify count=3]
+     *      [designer_iconsets username=iconify sets=1245,1246,1247]
      */
-    function designer_iconsets( $attrs=array(), $refresh=false ) {
+    public static function designer_iconsets( $attrs=array(), $refresh=false ) {
+
+        $refresh = true;
 
         $username     = Utils::get( $attrs, 'username', get_the_author_meta( 'iconfinder_username' ) );
         $count        = Utils::get( $attrs, 'count', 3 );
@@ -264,8 +297,9 @@ class Designer_Bios_Public {
             /**
              * Get all of the user's iconsets
              */
-            # $iconsets = icf_get_user_iconsets( $username );
+
             $iconsets = Utils::user_iconsets( $username );
+
             if ( isset( $iconsets['items'] ) ) {
                 $iconsets = $iconsets['items'];
             }
@@ -301,7 +335,7 @@ class Designer_Bios_Public {
             'username' => $username
         );
 
-        return Utils::buffer( BIOS_THEMES_PUBLIC . "shortcode-author-iconsets.php", $theme_args );
+        return Utils::buffer( BIOS_THEMES_FRONT . "shortcode-author-iconsets.php", $theme_args );
     }
 
 }

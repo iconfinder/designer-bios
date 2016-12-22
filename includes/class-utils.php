@@ -62,9 +62,22 @@ class Utils {
      * @return string
      */
     public static function dump($what, $die=true) {
+
+        if (is_string( $what )) $what = array( 'debug' => $what );
         $output = sprintf( '<pre>%s</pre>', print_r($what, true) );
         if ( $die ) die( $output );
         return $output;
+    }
+
+    /**
+     * This is an alias for Utils::dump()
+     * @param array|object  $what   The object|array to be printed
+     * @param bool          $die    Whether or not to die after printing the object
+     * @return string
+     */
+    public static function debug($what, $die=true) {
+
+        return Utiles::dump( $what, $die );
     }
 
     /**

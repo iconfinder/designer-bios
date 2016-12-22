@@ -1,17 +1,21 @@
 <?php if ( ! defined( 'ABSPATH' ) ) exit; ?>
-<div class="iconfinder-author-profile vcard">
+<div class="designer-bio <?php echo $username; ?>-bio vcard">
+    <?php if ( Utils::is_true($show_avatar ) ) : ?>
     <div class="avatar">
-        <?php echo get_avatar( get_the_author_meta( 'user_email', $user_id ), '128' ); ?>
+        <?php echo $avatar; ?>
     </div>
+    <?php endif; ?>
+    <?php if ( Utils::is_true($show_bio ) ) : ?>
     <div class="bio">
-        <h4 class="author-name fn n">Article by <?php the_author_meta( 'nickname', $user_id ); ?></h4>
+        <h4 class="name fn n">Article by <?php $nickname; ?></h4>
         <?php if ( $show_bio ) : ?>
-            <p class="author-bio">
-                <?php the_author_meta( 'description', $user_id ); ?>
-            </p>
+            <p><?php echo $bio; ?></p>
         <?php endif; ?>
     </div>
-    <div class="iconsets col-4">
-        <?php echo isset($author_iconsets) ? $author_iconsets : '' ; ?>
+    <?php else : ?>
+        <h2>Icon sets by <?php echo $username; ?></h2>
+    <? endif; ?>
+    <div class="samples col-<?php echo $count; ?>">
+        <?php echo isset($iconsets) ? $iconsets : '' ; ?>
     </div>
 </div>

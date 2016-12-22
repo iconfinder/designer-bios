@@ -111,7 +111,7 @@ class API {
      * @param null $credentials
      * @return bool
      */
-    function verify_credentials($credentials=null) {
+    public static function verify_credentials($credentials=null) {
 
         if (empty($credentials)) {
             $credentials = self::credentials();
@@ -133,7 +133,7 @@ class API {
      * don't need to hit the DB every time we need them during a process.
      * @return array
      */
-    function credentials() {
+    public static function credentials() {
         static $auth;
         if (null === $auth) {
             $options = get_option( BIOS_PLUGIN_NAME );
@@ -244,7 +244,7 @@ class API {
      * @param $response
      * @return bool
      */
-    function has_data($response) {
+    public static function has_data($response) {
         if (empty($response)) { return false;  }
         if (! isset($response['iconsets']) && ! isset($response['items'])) {
             return false;
@@ -342,23 +342,22 @@ class API {
 
         if (! is_array($query_args)) $query_args = array();
 
+        $query_args = array(
+            'count' => Utils::get($query_args, 'count', self::maxcount() )
+        );
+
+        # $result = new WP_Error('error', 'No valid API credentials');
+
         $auth = self::credentials();
 
-        if (! self::verify_credentials($auth)) {
-            $result = new WP_Error('error', 'No valid API credentials');
-        }
-        else {
+        if ( self::verify_credentials($auth) ) {
 
             $query_args = array_merge(array(
                 'client_id'     => Utils::get($auth, 'api_client_id'),
-                'client_secret' => Utils::get($auth, 'api_client_secret'),
-                'count'         => Utils::get($query_args, 'count', self::maxcount() )
+                'client_secret' => Utils::get($auth, 'api_client_secret')
             ), $query_args);
-
-            $query_string = "?" . http_build_query($query_args);
-
-            $result = ICONFINDER_API_URL . $path . $query_string ;
         }
-        return $result;
+
+        return ICONFINDER_API_URL . $path . "?" . http_build_query($query_args); ;
     }
 }
