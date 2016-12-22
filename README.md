@@ -15,7 +15,7 @@ Pages, Custom Post types, widgets, etc.
 
 To add a Designer Bio simply add the shortcode in the following format:
 
-`[designer_bio username=webalys bio=1 avatar=1 count=4 wp_username=vincent]`
+`[designer_bio username=webalys count=4]`
 
 The accepted attributes for the shortcode are explained below:
 
@@ -24,6 +24,8 @@ The accepted attributes for the shortcode are explained below:
 * _accepts: any valid iconfinder username_
 * _default: true_
 * _required: yes_
+
+_**Example**_ 
 
 `[designer_bio username=webalys]`
 
@@ -35,11 +37,11 @@ to display bio information.
 
 ### bio
 
-* _accepts: 1, 0, true, false, yes, or no_
-* _default: true_
-* _required: no_
+* _**accepts**: 1, 0, true, false, yes, or no_
+* _**default**: true_
+* _**required**: no_
 
-_Example_
+_**Example**_ 
 
 `[designer_bio username=webalys bio=0]`
 
@@ -48,9 +50,11 @@ The attribute is optional and defaults to `true`
 
 ### avatar
 
-* _accepts: 1, 0, true, false, yes, or no_
-* _default: true_
-* _required: no_
+* _**accepts**: 1, 0, true, false, yes, or no_
+* _**default**: true_
+* _**required**: no_
+
+_**Example**_ 
 
 `[designer_bio username=webalys avatar=0]`
 
@@ -61,11 +65,11 @@ The attribute is optional and defaults to `true`
 
 Indicates the number of iconsets to display.
 
-* _accepts: integer_
-* _default: 3_
-* _required: no_ 
+* _**accepts**: integer_
+* _**default**: 3_
+* _**required**: no_ 
 
-_Example_
+_**Example**_ 
 
 `[designer_bio username=webalys count=4]`
 
@@ -77,12 +81,12 @@ the same username in WordPress as on the Iconfinder site. Ideally they will be t
 To be clear: the `username` attribute refers to the designer's username on iconfinder.com. The `wp_username` is the 
 username the designer uses to log into the blog (if they are a blog post author).
 
-* _accepts: a valid WordPress username_
-* _default: none_
-* _required: no_
+* _**accepts**: a valid WordPress username_
+* _**default**: none_
+* _**required**: no_
 
 
-_Example_ 
+_**Example**_ 
 
 `[designer_bio username=webalys wp_username=vincent]`
 
