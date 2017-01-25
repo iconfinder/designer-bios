@@ -174,18 +174,18 @@ class ICF_Utils {
 
         if (empty($iconsets) || ! empty($username)) {
 
-            $path = API::path('iconsets', array( 'username' => $username ));
+            $path = ICF_API::path('iconsets', array( 'username' => $username ));
 
             /**
              * We grab the first batch outside of the loop so we
              * can determine how many total iconsets there are.
              */
-            $batch = API::call(
-                API::url($path, array( 'count' => API::maxcount() ))
+            $batch = ICF_API::call(
+                ICF_API::url($path, array( 'count' => API::maxcount() ))
             );
 
             $_x = $x;
-            $batches['batch-' . $_x]['url'] = API::url($path, array( 'count' => API::maxcount() ) );
+            $batches['batch-' . $_x]['url'] = ICF_API::url($path, array( 'count' => API::maxcount() ) );
             $batches['batch-' . $_x]['result'] = $batch;
 
             /**
@@ -203,7 +203,8 @@ class ICF_Utils {
              * This is how many API calls will be required since there
              * is a 100-count limit to API calls.
              */
-            $batch_count = ceil($total_count  / API::maxcount() ) ;
+            $max_count = ICF_API::maxcount();
+            $batch_count = ceil($total_count  / $max_count ) ;
 
             try {
                 /**
@@ -229,7 +230,7 @@ class ICF_Utils {
                      * (IMHO, this is a logical error in the API).
                      */
                     if ( $i == $batch_count-1 ) {
-                        $count = $total_count - ( $i * API::maxcount() ) - 1;
+                        $count = $total_count - ( $i * $max_count ) - 1;
                     }
 
                     /**
@@ -245,8 +246,8 @@ class ICF_Utils {
                     /**
                      * Get the next batch of iconsets.
                      */
-                    $batch = API::call(
-                        API::url($path, $query_args )
+                    $batch = ICF_API::call(
+                        ICF_API::url($path, $query_args )
                     );
 
                     /**
@@ -262,7 +263,7 @@ class ICF_Utils {
                         if (isset($batch['items'][$n]['iconset_id'])) {
                             $last_id = self::last_id( $batch );
                             $iconsets['run_count'][] = $last_id;
-                            $iconsets['run_count'][] = API::url($path, $query_args );
+                            $iconsets['run_count'][] = ICF_API::url($path, $query_args );
                         }
                     }
                 }
