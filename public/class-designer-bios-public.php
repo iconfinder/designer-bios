@@ -153,14 +153,21 @@ class Designer_Bios_Public {
             'sets'        => array()
         ), $attrs );
 
-        $username     = Utils::get( $attrs, 'username', get_the_author_meta( 'iconfinder_username' ) );
-        $wp_username  = Utils::get( $attrs, 'wp_username' );
-        $show_bio     = Utils::is_true(Utils::get( $attrs, 'bio', 1 ));
-        $show_avatar  = Utils::is_true(Utils::get( $attrs, 'avatar', 1 ));
-        $use_ref      = Utils::is_true(Utils::get( $attrs, 'use_ref', 0 ));
-        $count        = Utils::get( $attrs, 'count', 3 );
-        $sets         = Utils::get( $attrs, 'sets', array() );
-        $refresh      = Utils::get( $attrs, 'refresh', $refresh );
+        $username     = ICF_Utils::get( $attrs, 'username', get_the_author_meta( 'iconfinder_username' ) );
+        $wp_username  = ICF_Utils::get( $attrs, 'wp_username' );
+
+        $show_bio     = ICF_Utils::get( $attrs, 'bio', 1 );
+        $show_bio     = ICF_Utils::is_true( $show_bio );
+
+        $show_avatar  = ICF_Utils::get( $attrs, 'avatar', 1 );
+        $show_avatar  = ICF_Utils::is_true( $show_avatar );
+
+        $use_ref      = ICF_Utils::get( $attrs, 'use_ref', 0 );
+        $use_ref      = ICF_Utils::is_true( $use_ref );
+
+        $count        = ICF_Utils::get( $attrs, 'count', 3 );
+        $sets         = ICF_Utils::get( $attrs, 'sets', array() );
+        $refresh      = ICF_Utils::get( $attrs, 'refresh', $refresh );
 
         /**
          * Initiate our vars
@@ -246,7 +253,7 @@ class Designer_Bios_Public {
              * Cache the output in case we need it again.
              */
 
-            $output = Utils::buffer( BIOS_THEMES_FRONT . "shortcode-author-box.php", $theme_args );
+            $output = ICF_Utils::buffer( BIOS_THEMES_FRONT . "shortcode-author-box.php", $theme_args );
             set_transient( $cache_key, $output, 3600 );
         }
 
@@ -266,7 +273,7 @@ class Designer_Bios_Public {
          * Get all of the user's iconsets
          */
 
-        $iconsets = Utils::user_iconsets( $username );
+        $iconsets = ICF_Utils::user_iconsets( $username );
 
         if ( isset( $iconsets['items'] ) ) {
             $iconsets = $iconsets['items'];
@@ -278,7 +285,7 @@ class Designer_Bios_Public {
          */
 
         if ( ! empty($sets) ) {
-            $iconsets = Utils::filter_iconsets( $iconsets, $sets );
+            $iconsets = ICF_Utils::filter_iconsets( $iconsets, $sets );
         }
         else if ( $count > 0 ) {
             $iconsets = array_slice( $iconsets, 0, $count );

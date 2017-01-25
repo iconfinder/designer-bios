@@ -106,6 +106,11 @@ class Designer_Bios {
     private function load_dependencies() {
 
         /**
+         * Load the constants file.
+         */
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/constants.php';
+
+        /**
          * The class responsible for orchestrating the actions and filters of the
          * core plugin.
          */
@@ -120,12 +125,12 @@ class Designer_Bios {
         /**
          * Load the Utils code
          */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-utils.php';
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-icf-utils.php';
 
         /**
          * Load the API helper code
          */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-api.php';
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-icf-api.php';
 
         /**
          * The class responsible for defining all actions that occur in the admin area.

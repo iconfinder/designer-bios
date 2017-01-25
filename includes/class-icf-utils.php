@@ -2,10 +2,10 @@
 /**
  * Class of globally-used utility functions.
  *
- * @link       http://iconfinder.com/iconify
+ * @link       http://github.com/iconfinder/wp-iconfinder-tools
  * @since      2.0.0
  *
- * @package    Iconfinder_Portfolio
+ * @package    Iconfinder_Tools
  */
 class Utils {
 
@@ -67,14 +67,14 @@ class Utils {
     }
 
     /**
-     * This is an alias for Utils::dump()
+     * This is an alias for ICF_Utils::dump()
      * @param array|object  $what   The object|array to be printed
      * @param bool          $die    Whether or not to die after printing the object
      * @return string
      */
     public static function debug($what, $die=true) {
 
-        return Utils::dump( $what, $die );
+        return self::dump( $what, $die );
     }
 
     /**
@@ -268,7 +268,7 @@ class Utils {
                 }
             }
             catch(Exceptoin $e) {
-                Utils::debug( $e );
+                self::debug( $e );
             }
             if (isset($iconsets['items'])) {
                 $ids = array();
@@ -285,6 +285,39 @@ class Utils {
         if (! empty($username)) $iconsets = array();
 
         return $result;
+    }
+
+    /**
+     * @param $cache_key
+     * @param $data
+     */
+    public static function update_cache($cache_key, $data) {
+        if (trim($cache_key) != '') {
+            if (update_option($cache_key, $data)) {
+                $stored_keys = get_option('icf_cache_keys', array());
+                if (!in_array($cache_key, $stored_keys)) {
+                    array_push($stored_keys, $cache_key);
+                    update_option('icf_cache_keys', $stored_keys, 'no');
+                }
+            }
+        }
+    }
+
+    /**
+     * Builds the URL to iconset preview images. We take an indirect approach because
+     * if the paths to resources on the Iconfinder side change, we only want to have to
+     * update a single file.
+     * @param $size
+     * @param $identifier
+     * @return mixed
+     */
+    function get_iconfinder_preview_url($size, $identifier) {
+
+        return str_replace(
+            array(ICF_TOKEN_SIZE, ICF_TOKEN_IDENTIFIER),
+            array($size, $identifier),
+            ICF_ICONSET_PREVIEW_URL
+        );
     }
 
     /**

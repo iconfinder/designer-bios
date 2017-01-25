@@ -106,7 +106,7 @@ class Designer_Bios_Admin {
      */
     public function add_user_profile_fields( $user ) {
 
-        echo Utils::buffer( BIOS_THEMES_ADMIN . 'user-fields.php', array('user' => $user ) );
+        echo ICF_Utils::buffer( BIOS_THEMES_ADMIN . 'user-fields.php', array('user' => $user ) );
     }
 
     /**
@@ -119,11 +119,11 @@ class Designer_Bios_Admin {
         if ( ! current_user_can( 'edit_user', $user_id ) )
             return false;
 
-        $result = update_user_meta( $user_id, 'iconfinder_username', Utils::get( $_POST, 'iconfinder_username' ) );
+        $result = update_user_meta( $user_id, 'iconfinder_username', ICF_Utils::get( $_POST, 'iconfinder_username' ) );
         if ( is_wp_error( $result )) {
             //TODO: Handle the error
         }
-        $result = update_user_meta( $user_id, 'twitter_username', Utils::get( $_POST, 'twitter_username' ) );
+        $result = update_user_meta( $user_id, 'twitter_username', ICF_Utils::get( $_POST, 'twitter_username' ) );
         if ( is_wp_error( $result )) {
             //TODO: Handle the error
         }

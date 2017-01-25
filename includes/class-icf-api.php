@@ -1,52 +1,53 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: scott
- * Date: 12/19/16
- * Time: 3:58 PM
+ * Iconfinder API access functions.
+ *
+ * @link       http://github.com/iconfinder/wp-iconfinder-tools
+ * @since      2.0.0
+ *
+ * @package    Iconfinder_Tools
  */
-class API {
-
+class ICF_API {
 
     /**
      * @var int
      */
-    private static $maxcount = 100;
+    private static $maxcount = API_MAX_COUNT;
 
     /**
      * @var string
      */
-    private static $domain = 'iconfinder.com';
+    private static $domain = ICONFINDER_DOMAIN;
 
     /**
      * @var string
      */
-    private static $api_url = 'https://api.iconfinder.com/v2/';
+    private static $api_url = ICONFINDER_API_URL;
 
     /**
      * @var string
      */
-    private static $site_url = 'https://iconfinder.com/';
+    private static $site_url = ICONFINDER_URL;
 
     /**
      * @var string
      */
-    private static $cdn_url = 'https://cdn4.iconfinder.com/';
+    private static $cdn_url = ICONFINDER_CDN_URL;
 
     /**
      * @var string
      */
-    private static $icons_url = 'https://www.iconfinder.com/icons/';
+    private static $icons_url = ICONFINDER_LINK_ICONS;
 
     /**
      * @var string
      */
-    private static $iconsets_url = 'https://www.iconfinder.com/iconsets/';
+    private static $iconsets_url = ICONFINDER_LINK_ICONSETS;
 
     /**
      * @var bool
      */
-    private static $ssl_verify = false;
+    private static $ssl_verify = API_SSL_VERIFY;
 
 
     /**
@@ -116,15 +117,15 @@ class API {
         if (empty($credentials)) {
             $credentials = self::credentials();
         }
-        $ap_client_id = Utils::get($credentials, 'api_client_id');
+        $ap_client_id = ICF_Utils::get($credentials, 'api_client_id');
         if (empty($ap_client_id)) {
             return false;
         }
-        $api_client_secret = Utils::get($credentials, 'api_client_secret');
+        $api_client_secret = ICF_Utils::get($credentials, 'api_client_secret');
         if (empty($api_client_secret)) {
             return false;
         }
-        $username = Utils::get($credentials, 'username');
+        $username = ICF_Utils::get($credentials, 'username');
         if (empty($username)) {
             return false;
         }
@@ -141,9 +142,9 @@ class API {
         if (null === $auth) {
             $options = get_option( BIOS_PLUGIN_NAME );
             $auth = array(
-                'api_client_id'     => Utils::get($options, 'api_client_id'),
-                'api_client_secret' => Utils::get($options, 'api_client_secret'),
-                'username'          => Utils::get($options, 'username')
+                'api_client_id'     => ICF_Utils::get($options, 'api_client_id'),
+                'api_client_secret' => ICF_Utils::get($options, 'api_client_secret'),
+                'username'          => ICF_Utils::get($options, 'username')
             );
         }
         return $auth;
@@ -205,7 +206,7 @@ class API {
 
                 $response['from_cache'] = 0;
 
-                icf_update_cache($cache_key, $response);
+                ICF_Utils::update_cache($cache_key, $response);
 
                 if (trim($cache_key) != '') {
                     if ( update_option( $cache_key, $response ) ) {
@@ -219,7 +220,7 @@ class API {
             }
             catch(Exception $e) {
                 # throw new Exception($e);
-                Utils::debug(array(
+                ICF_Utils::debug(array(
                     'api_url' => $api_url,
                     'exceptionn' => $e
                 ));
@@ -295,8 +296,8 @@ class API {
 
         if (! is_array($args)) $args = array();
 
-        $username   = Utils::get( $args, 'username' );
-        $identifier = Utils::get($args, 'identifier');
+        $username   = ICF_Utils::get( $args, 'username' );
+        $identifier = ICF_Utils::get($args, 'identifier');
 
         $path = array( $which );
 
@@ -357,8 +358,8 @@ class API {
         if ( self::verify_credentials($auth) ) {
 
             $query_args = array_merge(array(
-                'client_id'     => Utils::get($auth, 'api_client_id'),
-                'client_secret' => Utils::get($auth, 'api_client_secret')
+                'client_id'     => ICF_Utils::get($auth, 'api_client_id'),
+                'client_secret' => ICF_Utils::get($auth, 'api_client_secret')
             ), $query_args);
         }
 

@@ -1,11 +1,11 @@
 <?php if ( ! defined( 'ABSPATH' ) ) exit; ?>
 <div class="designer-bio <?php echo $username; ?>-bio vcard">
-    <?php if ( Utils::is_true($show_avatar ) ) : ?>
+    <?php if ( ICF_Utils::is_true($show_avatar ) ) : ?>
     <div class="avatar">
         <?php echo $avatar; ?>
     </div>
     <?php endif; ?>
-    <?php if ( Utils::is_true($show_bio ) ) : ?>
+    <?php if ( ICF_Utils::is_true($show_bio ) ) : ?>
     <div class="bio">
         <h4 class="name fn n">Article by <?php $nickname; ?></h4>
         <?php if ( $show_bio ) : ?>
@@ -21,9 +21,9 @@
             <ul>
                 <?php foreach ( $iconsets as $iconset ) : ?>
                     <?php
-                    $identifier = Utils::get( $iconset, 'identifier' );
-                    $preview    = get_iconfinder_preview_url( 'medium', $identifier );
-                    $alt_text   = Utils::get( $iconset, 'name' );
+                    $identifier = ICF_Utils::get( $iconset, 'identifier' );
+                    $preview    = ICF_Utils::get_iconfinder_preview_url( 'medium', $identifier );
+                    $alt_text   = ICF_Utils::get( $iconset, 'name' );
                     ?>
                     <li>
                         <a href="https://iconfinder.com/iconsets/<?php echo $identifier; ?><?php echo $ref_code; ?>" target="_blank">
