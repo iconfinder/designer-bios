@@ -172,6 +172,8 @@ class ICF_Utils {
 
         $items = array();
 
+        $max_count = ICF_API::maxcount();
+
         if (empty($iconsets) || ! empty($username)) {
 
             $path = ICF_API::path('iconsets', array( 'username' => $username ));
@@ -181,11 +183,11 @@ class ICF_Utils {
              * can determine how many total iconsets there are.
              */
             $batch = ICF_API::call(
-                ICF_API::url($path, array( 'count' => API::maxcount() ))
+                ICF_API::url($path, array( 'count' => $max_count ))
             );
 
             $_x = $x;
-            $batches['batch-' . $_x]['url'] = ICF_API::url($path, array( 'count' => API::maxcount() ) );
+            $batches['batch-' . $_x]['url'] = ICF_API::url($path, array( 'count' => $max_count ) );
             $batches['batch-' . $_x]['result'] = $batch;
 
             /**
@@ -203,7 +205,6 @@ class ICF_Utils {
              * This is how many API calls will be required since there
              * is a 100-count limit to API calls.
              */
-            $max_count = ICF_API::maxcount();
             $batch_count = ceil($total_count  / $max_count ) ;
 
             try {
@@ -220,7 +221,7 @@ class ICF_Utils {
                     /**
                      * Default to the maximum API results count.
                      */
-                    $count = API::maxcount();
+                    $count = ICF_API::maxcount();
 
                     /**
                      * If we are on the last batch, we only want to
