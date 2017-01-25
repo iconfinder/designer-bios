@@ -30,11 +30,6 @@ if ( ! defined( 'WPINC' ) ) {
     die;
 }
 
-// If this file is called directly, abort.
-if ( ! defined( 'ICF_TOOLS' ) ) {
-    die( 'The Iconfinder Tools plugin is required to use the Designer Bios plugin' );
-}
-
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-designer-bios-activator.php
