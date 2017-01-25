@@ -3,9 +3,9 @@
  * Class of globally-used utility functions.
  *
  * @link       http://iconfinder.com/iconify
- * @since      1.0.0
+ * @since      2.0.0
  *
- * @package    Designer_Bios
+ * @package    Iconfinder_Portfolio
  */
 class Utils {
 
@@ -29,9 +29,6 @@ class Utils {
             if (isset($subject->$key)) {
                 $value = $subject->$key;
             }
-        }
-        else if (! empty($subject)) {
-            $value = $subject;
         }
         return $value;
     }
