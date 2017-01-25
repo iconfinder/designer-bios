@@ -245,7 +245,7 @@ class Designer_Bios_Public {
                 'count'       => $count,
                 'user_id'     => $user_id,
                 'use_ref'     => $use_ref,
-                'ref_code'    => Utils::is_true($use_ref) ? "?ref={$username}" : "",
+                'ref_code'    => ICF_Utils::is_true($use_ref) ? "?ref={$username}" : "",
                 'iconsets'    => self::designer_iconsets( $username, $count, $sets )
             ));
 

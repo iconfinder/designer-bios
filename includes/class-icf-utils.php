@@ -7,7 +7,7 @@
  *
  * @package    Iconfinder_Tools
  */
-class Utils {
+class ICF_Utils {
 
     /**
      * Returns the requested value or default if empty
