@@ -116,16 +116,16 @@ class API {
         if (empty($credentials)) {
             $credentials = self::credentials();
         }
-        $ap_client_id = Utils::get($credentials, 'api_client_id'));
-        if (empty($ap_client_id) {
+        $ap_client_id = Utils::get($credentials, 'api_client_id');
+        if (empty($ap_client_id)) {
             return false;
         }
-        $api_client_secret = Utils::get($credentials, 'api_client_secret'));
-        if (empty($api_client_secret) {
+        $api_client_secret = Utils::get($credentials, 'api_client_secret');
+        if (empty($api_client_secret)) {
             return false;
         }
-        $username = Utils::get($credentials, 'username'));
-        if (empty($username) {
+        $username = Utils::get($credentials, 'username');
+        if (empty($username)) {
             return false;
         }
         return true;
