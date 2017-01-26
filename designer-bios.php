@@ -15,7 +15,7 @@
  * @wordpress-plugin
  * Plugin Name:       Designer Bios
  * Plugin URI:        http://iconfinder.com
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Description:       A plugin to display an avatar, short bio, and sample icon sets for a designer/author.
  * Version:           1.0.0
  * Author:            Scott Lewis
  * Author URI:        http://iconfinder.com/iconify

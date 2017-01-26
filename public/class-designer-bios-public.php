@@ -231,7 +231,7 @@ class Designer_Bios_Public {
                 $count = count($sets);
             }
 
-            if ( empty( $nickname )) {
+            if ( empty( $nickname ) ) {
                 $nickname = $username;
             }
 
