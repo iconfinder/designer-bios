@@ -197,24 +197,25 @@ class Designer_Bios_Public {
         }
         else {
 
-            if (! empty($wp_username)) {
-                $user = get_user_by( 'login', $wp_username );
-                $user_id = $user->ID;
-            }
-            else if (! empty($username)) {
-                $nickname = $username;
-                $user_query = new WP_User_Query( array(
-                    'meta_key'   => 'iconfinder_username',
-                    'meta_value' => $username
-                ));
-                $results = $user_query->get_results();
-                if ( is_array($results) && isset($results[0]) ) {
-                    $user     = $results[0];
-                    $user_id  = $user->ID;
-                    $nickname = get_the_author_meta( 'nickname', $user_id );
-                    $bio      = get_the_author_meta( 'description', $user_id );
-                    $avatar   = get_avatar( get_the_author_meta( 'user_email', $user_id ), '128' );
+            if ( ! empty( $wp_username ) || ! empty( $username) ) {
+                if (! empty($wp_username)) {
+                    $user = get_user_by( 'login', $wp_username );
+                    $user_id = $user->ID;
                 }
+                else if (! empty($username)) {
+                    $user_query = new WP_User_Query( array(
+                        'meta_key'   => 'iconfinder_username',
+                        'meta_value' => $username
+                    ));
+                    $results = $user_query->get_results();
+                    if ( is_array($results) && isset($results[0]) ) {
+                        $user     = $results[0];
+                        $user_id  = $user->ID;
+                    }
+                }
+                $nickname = get_the_author_meta( 'nickname', $user_id );
+                $bio      = get_the_author_meta( 'description', $user_id );
+                $avatar   = get_avatar( get_the_author_meta( 'user_email', $user_id ), '128' );
             }
 
             /**
