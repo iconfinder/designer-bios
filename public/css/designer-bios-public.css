@@ -11,10 +11,10 @@ body.single-iconset #content {
 
 .designer-bio.vcard {
 
-    background: #eee;
+    background: #fff;
     border-radius: 4px;
     border: 1px solid #aaa;
-    margin: 20px;
+    margin: 20px 0;
     padding: 30px;
     float: none !important;
     width: auto;
@@ -52,7 +52,7 @@ body.single-iconset #content {
     display: block;
     width: auto;
     height: auto;
-    border-radius: 0 !important;
+    border-radius: 50% !important;
     box-shadow: none !important;
 }
 

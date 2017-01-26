@@ -5,15 +5,13 @@
         <?php echo $avatar; ?>
     </div>
     <?php endif; ?>
-    <?php if ( ICF_Utils::is_true($show_bio ) ) : ?>
+    <?php if ( $show_bio ) : ?>
     <div class="bio">
-        <h4 class="name fn n">Article by <?php $username; ?></h4>
-        <?php if ( $show_bio ) : ?>
-            <p><?php echo $bio; ?></p>
-        <?php endif; ?>
+        <h4 class="name fn n">Article by <?php echo $username; ?></h4>
+        <p><?php echo $bio; ?></p>
     </div>
     <?php else : ?>
-        <h2>Icon sets by <?php echo $username; ?></h2>
+        <h4>Icon sets by <?php echo $username; ?></h4>
     <? endif; ?>
     <?php if ( $iconsets ) : ?>
     <div class="samples col-<?php echo $count; ?>">

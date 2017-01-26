@@ -156,18 +156,13 @@ class Designer_Bios_Public {
         $username     = ICF_Utils::get( $attrs, 'username', get_the_author_meta( 'iconfinder_username' ) );
         $wp_username  = ICF_Utils::get( $attrs, 'wp_username' );
 
-        $show_bio     = ICF_Utils::get( $attrs, 'bio', 1 );
-        $show_bio     = ICF_Utils::is_true( $show_bio );
-
-        $show_avatar  = ICF_Utils::get( $attrs, 'avatar', 1 );
-        $show_avatar  = ICF_Utils::is_true( $show_avatar );
-
-        $use_ref      = ICF_Utils::get( $attrs, 'use_ref', 0 );
-        $use_ref      = ICF_Utils::is_true( $use_ref );
+        $show_bio     = ICF_Utils::is_true( ICF_Utils::get( $attrs, 'bio', 1 ) );
+        $show_avatar  = ICF_Utils::is_true( ICF_Utils::get( $attrs, 'avatar', 1 ) );
+        $use_ref      = ICF_Utils::is_true( ICF_Utils::get( $attrs, 'use_ref', 0 ) );
+        $refresh      = ICF_Utils::is_true(ICF_Utils::get( $attrs, 'refresh', $refresh ));
 
         $count        = ICF_Utils::get( $attrs, 'count', 3 );
         $sets         = ICF_Utils::get( $attrs, 'sets', array() );
-        $refresh      = ICF_Utils::get( $attrs, 'refresh', $refresh );
 
         /**
          * Initiate our vars
@@ -200,7 +195,6 @@ class Designer_Bios_Public {
             if ( ! empty( $wp_username ) || ! empty( $username) ) {
                 if (! empty($wp_username)) {
                     $user = get_user_by( 'login', $wp_username );
-                    $user_id = $user->ID;
                 }
                 else if (! empty($username)) {
                     $user_query = new WP_User_Query( array(
@@ -210,12 +204,11 @@ class Designer_Bios_Public {
                     $results = $user_query->get_results();
                     if ( is_array($results) && isset($results[0]) ) {
                         $user     = $results[0];
-                        $user_id  = $user->ID;
                     }
                 }
-                $nickname = get_the_author_meta( 'nickname', $user_id );
-                $bio      = get_the_author_meta( 'description', $user_id );
-                $avatar   = get_avatar( get_the_author_meta( 'user_email', $user_id ), '128' );
+                $nickname = get_the_author_meta( 'nickname', $user->ID );
+                $bio      = get_the_author_meta( 'description', $user->ID );
+                $avatar   = get_avatar( get_the_author_meta( 'user_email', $user->ID ), '128' );
             }
 
             /**
@@ -223,7 +216,7 @@ class Designer_Bios_Public {
              * then there is no bio to show.
              */
 
-            if (empty($results)) {
+            if ( empty($bio) ) {
                 $show_bio = 0;
             }
 
@@ -250,7 +243,7 @@ class Designer_Bios_Public {
                 'count'       => $count,
                 'user_id'     => $user_id,
                 'use_ref'     => $use_ref,
-                'ref_code'    => ICF_Utils::is_true($use_ref) ? "?ref={$username}" : "",
+                'ref_code'    => $use_ref ? "?ref={$username}" : "",
                 'iconsets'    => self::designer_iconsets( $username, $count, $sets )
             ));
 
