@@ -165,7 +165,7 @@ class ICF_API {
         $response = null;
 
         if ( $from_cache ) {
-            $response = self::cache_key( $cache_key );
+            $response = ICF_Utils::get_cache( $cache_key );
         }
 
         // If there is no cached data, make the API cale.
@@ -219,11 +219,10 @@ class ICF_API {
                 }
             }
             catch(Exception $e) {
-                # throw new Exception($e);
                 ICF_Utils::debug(array(
                     'api_url' => $api_url,
                     'exceptionn' => $e
-                ));
+                ), false );
             }
         }
 
@@ -235,48 +234,27 @@ class ICF_API {
     }
 
     /**
-     * @param $cache_key
-     * @return mixed
+     * @deprecated
+     * Moved to ICF_Utils class.
      */
     public static function get_cache($cache_key) {
-        $response = get_option($cache_key);
-        if ( self::has_data($response) ) {
-            $response['from_cache'] = 1;
-            return $response;
-        }
-        return $response;
+        return ICF_Utils::get_cache($cache_key);
     }
 
     /**
-     * Checks to see if an API response has any icons or iconsets
-     * @param $response
-     * @return bool
+     * @deprecated
+     * Moved to ICF_Utils class.
      */
     public static function has_data($response) {
-        if (empty($response)) { return false;  }
-        if (! isset($response['iconsets']) && ! isset($response['items'])) {
-            return false;
-        }
-        if (empty($response['iconsets']) && empty($response['items'])) {
-            return false;
-        }
-        return true;
+        return ICF_Utils::has_data($response);
     }
 
     /**
-     * @param $cache_key
-     * @param $data
+     * @deprecated
+     * Moved to ICF_Utils class.
      */
     public static function update_cache($cache_key, $data) {
-        if (trim($cache_key) != '') {
-            if (update_option($cache_key, $data)) {
-                $stored_keys = get_option('icf_cache_keys', array());
-                if (! in_array($cache_key, $stored_keys)) {
-                    array_push($stored_keys, $cache_key);
-                    update_option('icf_cache_keys', $stored_keys, 'no');
-                }
-            }
-        }
+        ICF_Utils::update_cache($cache_key, $data);
     }
 
     /**
@@ -351,8 +329,6 @@ class ICF_API {
         if (! is_array($query_args)) $query_args = array('count' => 100);
         if (! isset( $query_args['count'])) $query_args['count'] = 100;
 
-        # $result = new WP_Error('error', 'No valid API credentials');
-
         $auth = self::credentials();
 
         if ( self::verify_credentials($auth) ) {
@@ -363,6 +339,6 @@ class ICF_API {
             ), $query_args);
         }
 
-        return ICONFINDER_API_URL . $path . "?" . http_build_query($query_args); ;
+        return self::api_url() . $path . "?" . http_build_query($query_args);
     }
 }

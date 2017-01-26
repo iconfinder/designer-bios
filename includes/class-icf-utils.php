@@ -297,12 +297,53 @@ class ICF_Utils {
         if (trim($cache_key) != '') {
             if (update_option($cache_key, $data)) {
                 $stored_keys = get_option('icf_cache_keys', array());
-                if (!in_array($cache_key, $stored_keys)) {
+                if (! in_array($cache_key, $stored_keys)) {
                     array_push($stored_keys, $cache_key);
                     update_option('icf_cache_keys', $stored_keys, 'no');
                 }
             }
         }
+    }
+
+    /**
+     * Createa  unique cache key
+     * @param $api_path  The API call path.
+     * @return string
+     */
+    public static function cache_key($api_path) {
+        return implode('_', explode('/', $api_path));
+    }
+
+    /**
+     * @param $cache_key
+     * @return mixed
+     */
+    public static function get_cache($cache_key) {
+        $response = null;
+        if ( ! empty( $cache_key) ) {
+            $response = get_option($cache_key);
+            if (self::has_data($response)) {
+                $response['from_cache'] = 1;
+                return $response;
+            }
+        }
+        return $response;
+    }
+
+    /**
+     * Checks to see if an API response has any icons or iconsets
+     * @param $response
+     * @return bool
+     */
+    public static function has_data($response) {
+        if (empty($response)) { return false;  }
+        if (! isset($response['iconsets']) && ! isset($response['items'])) {
+            return false;
+        }
+        if (empty($response['iconsets']) && empty($response['items'])) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -313,7 +354,7 @@ class ICF_Utils {
      * @param $identifier
      * @return mixed
      */
-    function get_iconfinder_preview_url($size, $identifier) {
+    public static function get_iconfinder_preview_url($size, $identifier) {
 
         return str_replace(
             array(ICF_TOKEN_SIZE, ICF_TOKEN_IDENTIFIER),

@@ -7,7 +7,7 @@
     <?php endif; ?>
     <?php if ( ICF_Utils::is_true($show_bio ) ) : ?>
     <div class="bio">
-        <h4 class="name fn n">Article by <?php $nickname; ?></h4>
+        <h4 class="name fn n">Article by <?php $username; ?></h4>
         <?php if ( $show_bio ) : ?>
             <p><?php echo $bio; ?></p>
         <?php endif; ?>
